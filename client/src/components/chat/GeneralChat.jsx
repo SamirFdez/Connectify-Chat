@@ -16,6 +16,10 @@ export const GeneralChat = () => {
       >
         <MessageReceived />
         <MessageSent />
+        <MessageReceived />
+        <MessageSent />
+        <MessageReceived />
+        <MessageSent />
       </div>
       <MessageBox />
     </>
