@@ -1,4 +1,18 @@
-export const MessageBox = () => {
+import { useState } from "react";
+
+export const MessageBox = ({ socket }) => {
+  const [messageField, setMessageField] = useState("");
+
+  const handleChangeMessageField = (e) => {
+    const inputMessage = e.target.value;
+    setMessageField(inputMessage);
+  };
+
+  const sendMessage = () => {
+    socket.emit("chat message", messageField);
+    setMessageField("");
+  };
+
   return (
     <>
       <div className="p-1 flex items-center w-full">
@@ -6,8 +20,15 @@ export const MessageBox = () => {
           type="text"
           placeholder="Type your message..."
           className="flex-1 border border-neutral rounded-full px-4 py-2"
+          value={messageField}
+          onChange={handleChangeMessageField}
         />
-        <button className="text-white bg-neutral rounded-full p-2 ml-2">
+        <button
+          className="text-white bg-neutral rounded-full p-2 ml-2"
+          type="submit"
+          disabled={messageField === ""}
+          onClick={sendMessage}
+        >
           <svg
             width="20px"
             height="20px"

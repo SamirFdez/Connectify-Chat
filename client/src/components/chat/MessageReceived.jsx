@@ -1,4 +1,6 @@
-export const MessageReceived = () => {
+import dayjs from "dayjs";
+
+export const MessageReceived = ({ message }) => {
   return (
     <div>
       <div className="chat chat-start w-full">
@@ -11,10 +13,10 @@ export const MessageReceived = () => {
           </div>
         </div>
         <div className="chat-header">
-          Paola Díaz
-          <time className="text-xs opacity-50 mx-2">12:45</time>
+          Nombre random
+          <time className="text-xs opacity-50 mx-2">{dayjs().format('h:m a')}</time>
         </div>
-        <div className="chat-bubble">Vamo a chulearnos</div>
+        <div className="chat-bubble">{message}</div>
         <div className="chat-footer opacity-50">Delivered</div>
       </div>
     </div>

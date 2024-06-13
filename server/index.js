@@ -3,7 +3,7 @@ import logger from "morgan";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { corsMiddleware } from "./middlewares/cors.js";
-import cors from "cors";
+import { Socket } from "node:dgram";
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -22,6 +22,9 @@ app.use(logger("dev"));
 app.disable("x-powered-by");
 
 const io = new Server(server, {
+  connectionStateRecovery: {
+    maxDisconnectionDuration: {}
+  },
   cors: {
     origin: acceptedOrigins,
     methods: ["GET", "POST"],
@@ -30,10 +33,14 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("an user connected");
+  // console.log("an user connected");
 
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
+  // socket.on("disconnect", () => {
+  //   console.log("user disconnected");
+  // });
+
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg);
   });
 });
 
