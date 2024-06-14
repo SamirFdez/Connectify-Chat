@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("<h1>Esto es el chat</h1>");
+  res.send("<h1 style='text-align: center'>Connectify Chat</h1>");
 });
 
 server.listen(PORT, () => {
