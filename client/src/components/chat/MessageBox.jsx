@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const MessageBox = ({ socket }) => {
   const [messageField, setMessageField] = useState("");
@@ -13,6 +13,12 @@ export const MessageBox = ({ socket }) => {
     setMessageField("");
   };
 
+  const sendMessageKey = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   return (
     <>
       <div className="p-1 flex items-center w-full">
@@ -22,6 +28,7 @@ export const MessageBox = ({ socket }) => {
           className="flex-1 border border-neutral rounded-full px-4 py-2"
           value={messageField}
           onChange={handleChangeMessageField}
+          onKeyDown={sendMessageKey}
         />
         <button
           className="text-white bg-neutral rounded-full p-2 ml-2"

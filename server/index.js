@@ -3,12 +3,11 @@ import logger from "morgan";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { corsMiddleware } from "./middlewares/cors.js";
-import { Socket } from "node:dgram";
 
 const PORT = process.env.PORT ?? 3000;
 
 const acceptedOrigins = [
-  "http://localhost:8080",
+  "http://localhost:3000",
   "http://localhost:1234",
   "http://localhost:5173",
   "https://example.com",
@@ -17,13 +16,12 @@ const acceptedOrigins = [
 const app = express();
 const server = createServer(app);
 
-app.use(corsMiddleware(acceptedOrigins));
 app.use(logger("dev"));
 app.disable("x-powered-by");
 
 const io = new Server(server, {
   connectionStateRecovery: {
-    maxDisconnectionDuration: {}
+    maxDisconnectionDuration: 30000
   },
   cors: {
     origin: acceptedOrigins,
@@ -40,6 +38,7 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("chat message", (msg) => {
+    console.log("chat message: ", msg)
     io.emit("chat message", msg);
   });
 });
