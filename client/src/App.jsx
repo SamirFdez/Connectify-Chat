@@ -1,6 +1,7 @@
 import { Header } from "./components/Header/Header";
 import { HomeContainer } from "./components/Home/HomeContainer";
 import { Footer } from "./components/footer/Footer";
+import { UserLogic } from "./components/user/UserLogic";
 import "./App.css";
 
 function App() {
@@ -8,7 +9,9 @@ function App() {
     <>
       <div className="App">
         <Header />
-        <HomeContainer />
+        <UserLogic />
+        {/* <Header />
+        <HomeContainer /> */}
         <Footer />
       </div>
     </>

@@ -20,7 +20,7 @@ app.disable("x-powered-by");
 
 const io = new Server(server, {
   connectionStateRecovery: {
-    maxDisconnectionDuration: 30000
+    maxDisconnectionDuration: 30000,
   },
   cors: {
     origin: acceptedOrigins,
@@ -37,8 +37,12 @@ io.on("connection", (socket) => {
   // });
 
   socket.on("chat message", (msg) => {
-    console.log("chat message: ", msg)
-    io.emit("chat message", msg);
+    const timestamp = new Date();
+    const message = {
+      timestamp: timestamp,
+      message: msg,
+    };
+    io.emit("chat message", message);
   });
 });
 

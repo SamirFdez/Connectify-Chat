@@ -14,9 +14,9 @@ export const MessageReceived = ({ message }) => {
         </div>
         <div className="chat-header">
           Nombre random
-          <time className="text-xs opacity-50 mx-2">{dayjs().format('h:m a')}</time>
+          <time className="text-xs opacity-50 mx-2">{dayjs(message.timestamp).format('h:mm a')}</time>
         </div>
-        <div className="chat-bubble">{message}</div>
+        <div className="chat-bubble">{message.message}</div>
         <div className="chat-footer opacity-50">Delivered</div>
       </div>
     </div>

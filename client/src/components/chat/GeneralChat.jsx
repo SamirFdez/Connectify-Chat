@@ -8,16 +8,16 @@ export const GeneralChat = ({ socket }) => {
 
   useEffect(() => {
     // Manejar la suscripción al evento 'chat message'
-    const handleNewMessage = (msg) => {
-      setMessages(prevMessages => [...prevMessages, msg]);
+    const handleNewMessage = (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
       scrollToBottom();
     };
 
-    socket?.on('chat message', handleNewMessage);
+    socket?.on("chat message", handleNewMessage);
 
     // Limpiar la suscripción cuando el componente se desmonta
     return () => {
-      socket?.off('chat message', handleNewMessage);
+      socket?.off("chat message", handleNewMessage);
     };
   }, []);
 
@@ -28,12 +28,16 @@ export const GeneralChat = ({ socket }) => {
       chatBubble.scrollTop = chatBubble.scrollHeight;
     }
   };
+  console.log(messages);
 
   return (
     <>
-      <div id="chat-bubble" className="w-full items-end max-h-[90%] overflow-x-hidden">
-        {messages.map((msg, index) => (
-          <MessageReceived key={index} message={msg} />
+      <div
+        id="chat-bubble"
+        className="w-full items-end max-h-[90%] overflow-x-hidden"
+      >
+        {messages.map((message, index) => (
+          <MessageReceived key={index} message={message} />
         ))}
       </div>
       <MessageBox socket={socket} />
