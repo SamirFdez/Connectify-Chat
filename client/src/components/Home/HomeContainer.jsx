@@ -14,7 +14,7 @@ export const HomeContainer = () => {
         </div>
       </div>
       <div className="hidden sm:flex items-center justify-center w-full md:pt-4 lg:pt-8">
-        <MobileContainer />
+        <MobileContainer socket={socket} />
       </div>
     </>
   );
