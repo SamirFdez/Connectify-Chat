@@ -1,8 +1,13 @@
 import express from "express";
 import logger from "morgan";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
 
+dotenv.config();
+
+const uri = process.env.DB_CONNECTION;
 const PORT = process.env.PORT ?? 3000;
 
 const acceptedOrigins = [
@@ -18,12 +23,19 @@ const server = createServer(app);
 app.use(logger("dev"));
 app.disable("x-powered-by");
 
+mongoose.connect(uri);
+
+mongoose.connection.on("open", _ => {
+  const db = mongoose.createConnection(uri).name
+  console.log("Database is connected",);
+});
+
 const io = new Server(server, {
   connectionStateRecovery: {
     maxDisconnectionDuration: 30000,
   },
   cors: {
-    origin: acceptedOrigins,
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },

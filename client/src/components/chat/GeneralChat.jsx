@@ -28,7 +28,6 @@ export const GeneralChat = ({ socket }) => {
       chatBubble.scrollTop = chatBubble.scrollHeight;
     }
   };
-  console.log(messages);
 
   return (
     <>
