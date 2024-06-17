@@ -1,4 +1,14 @@
-export const UserForm = ({ avatarsRandom }) => {
+import { useState } from "react";
+
+export const UserForm = ({ user, addUser, avatarsRandom }) => {
+  const [username, setUsername] = useState(user.username ?? "");
+  const [avatarId, setAvatarId] = useState(user.avatarId ?? null);
+
+  const handleChangeUsername = (e) => {
+    const inputUsername = e.target.value;
+    setUsername(inputUsername.slice(0, 15));
+  };
+
   return (
     <>
       <div className="flex flex-col items-center p-12">
@@ -14,6 +24,8 @@ export const UserForm = ({ avatarsRandom }) => {
               type="text"
               placeholder="Type here"
               className="input input-bordered w-full"
+              value={username}
+              onChange={handleChangeUsername}
             />
             <div className="label">
               <span className="label-text-alt flex gap-2">
@@ -36,12 +48,18 @@ export const UserForm = ({ avatarsRandom }) => {
             </div>
           </label>
           <h1 className="pb-4">Choose an avatar</h1>
-          <div className="grid grid-cols-5 md:grid-cols-6  gap-5">
+          <div className="grid grid-cols-6 md:grid-cols-6 gap-3 pb-12">
             {avatarsRandom?.map((avatar, idx) => (
-              <div className="avatar" key={`avatar-${idx}`} onClick={""}>
+              <div
+                className="avatar"
+                key={`avatar-${idx}`}
+                onClick={() => setAvatarId(idx + 1)}
+              >
                 <div
                   className={`w-16 rounded-full ${
-                    !avatar.selected ? "ring ring-primary" : null
+                    avatarId === idx + 1
+                      ? "ring-offset-2 ring ring-primary"
+                      : null
                   }`}
                 >
                   <img src={`https://api.multiavatar.com/${avatar.id}.png`} />
@@ -50,6 +68,13 @@ export const UserForm = ({ avatarsRandom }) => {
             ))}
           </div>
         </div>
+        <button
+          className="btn btn-primary"
+          disabled={username === "" || avatarId === null}
+          onClick={() => addUser(username, avatarId)}
+        >
+          Conectar
+        </button>
       </div>
     </>
   );
