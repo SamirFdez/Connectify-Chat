@@ -1,14 +1,25 @@
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 
 const userSchema = new mongoose.Schema(
   {
-    _id: {
+    username: {
       type: String,
-      default: uuidv4(),
+      required: true,
+      trim: true,
     },
-    name: String,
-    isConnected: Boolean
+    avatarId: {
+      type: Number,
+      default: 1002,
+    },
+    deviceId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    isConnected: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -1,13 +1,11 @@
 import express from "express";
 import logger from "morgan";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
 import { Server } from "socket.io";
 import { createServer } from "node:http";
+import { connectionDB } from "./connection.js";
 
-dotenv.config();
+import { updateOrCreateUser, saveUser } from "./controllers/user.js";
 
-const uri = process.env.DB_CONNECTION;
 const PORT = process.env.PORT ?? 3000;
 
 const acceptedOrigins = [
@@ -15,20 +13,15 @@ const acceptedOrigins = [
   "http://localhost:1234",
   "http://localhost:5173",
   "https://example.com",
+  "*",
 ];
 
+connectionDB();
 const app = express();
 const server = createServer(app);
 
 app.use(logger("dev"));
 app.disable("x-powered-by");
-
-mongoose.connect(uri);
-
-mongoose.connection.on("open", _ => {
-  const db = mongoose.createConnection(uri).name
-  console.log("Database is connected",);
-});
 
 const io = new Server(server, {
   connectionStateRecovery: {
@@ -41,12 +34,14 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  // console.log("an user connected");
+io.on("connect", (socket) => {
+  socket.on("user", (user) => {
+    updateOrCreateUser(user);
+  });
 
-  // socket.on("disconnect", () => {
-  //   console.log("user disconnected");
-  // });
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 
   socket.on("chat message", (msg) => {
     const timestamp = new Date();
