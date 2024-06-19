@@ -39,6 +39,8 @@ io.on("connect", (socket) => {
     updateOrCreateUser(user);
   });
 
+  
+
   socket.on("chat message", (msg) => {
     const timestamp = new Date();
     const message = {

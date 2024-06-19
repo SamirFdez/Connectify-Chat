@@ -1,13 +1,30 @@
+import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { GeneralChat } from "../views/GeneralChat";
+import { PrivateRoutes } from "./PrivateRoutes";
 import { Login } from "../views/Login";
 
 export const AppRouter = () => {
+  const [userAuth, setUserAuth] = useState(false);
+
+  useEffect(() => {
+    const getUser = localStorage.getItem("connectifyUser");
+
+    if (getUser) {
+      setUserAuth(true);
+      sessionStorage.setItem("setUserAuth", true);
+    }
+  }, []);
+
+  console.log(userAuth);
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/general-chat" element={<GeneralChat />} />
+        {userAuth ? (
+          <Route path="/*" element={<PrivateRoutes />} />
+        ) : (
+          <Route path="/" element={<Login />} />
+        )}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
