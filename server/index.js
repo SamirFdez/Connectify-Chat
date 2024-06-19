@@ -5,6 +5,7 @@ import { createServer } from "node:http";
 import { connectionDB } from "./connection.js";
 
 import { updateOrCreateUser } from "./controllers/user.js";
+import { createMessage } from "./controllers/message.js";
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -39,15 +40,9 @@ io.on("connect", (socket) => {
     updateOrCreateUser(user);
   });
 
-  
-
-  socket.on("chat message", (msg) => {
-    const timestamp = new Date();
-    const message = {
-      timestamp: timestamp,
-      message: msg,
-    };
-    io.emit("chat message", message);
+  socket.on("messageReceived", (messageReceived) => {
+    createMessage(messageReceived);
+    // io.emit("chat message", message);
   });
 });
 

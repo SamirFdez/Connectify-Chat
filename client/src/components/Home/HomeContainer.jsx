@@ -12,10 +12,6 @@ export const HomeContainer = () => {
     socket.on("connect", () => {
       socket.emit("user", user);
     });
-
-    // socket.on("disconnect", () => {
-    //   socket.emit("user", user);
-    // });
   }, []);
 
   return (

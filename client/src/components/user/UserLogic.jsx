@@ -1,8 +1,14 @@
 import { useState, useEffect } from "react";
 import { UserForm } from "./UserForm";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch } from "react-redux";
+import { updateAuthenticationState } from "../../store/authentication";
+import { useNavigate } from "react-router-dom";
 
 export const UserLogic = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("connectifyUser")) ?? {}
   );
@@ -29,6 +35,9 @@ export const UserLogic = () => {
 
     setUser(newUser);
     localStorage.setItem("connectifyUser", JSON.stringify(newUser));
+    dispatch(updateAuthenticationState(true));
+    sessionStorage.setItem("userAuth", true);
+    navigate("/general-chat");
   };
 
   useEffect(() => {

@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import "emoji-picker-element";
 
 export const MessageBox = ({ socket }) => {
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("connectifyUser")) ?? {}
+  );
   const [messageField, setMessageField] = useState("");
   const [emojiPicker, setEmojiPicker] = useState(false);
 
@@ -11,7 +14,10 @@ export const MessageBox = ({ socket }) => {
   };
 
   const sendMessage = () => {
-    socket.emit("chat message", messageField);
+    socket.emit("messageReceived", {
+      message: messageField,
+      deviceId: user.deviceId,
+    });
     setEmojiPicker(false);
     setMessageField("");
   };
