@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { connectionDB } from "./connection.js";
 
-import { updateOrCreateUser, saveUser } from "./controllers/user.js";
+import { updateOrCreateUser } from "./controllers/user.js";
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -37,10 +37,6 @@ const io = new Server(server, {
 io.on("connect", (socket) => {
   socket.on("user", (user) => {
     updateOrCreateUser(user);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
   });
 
   socket.on("chat message", (msg) => {

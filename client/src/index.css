@@ -15,3 +15,13 @@
 .iconFooter {
     width: 1.2em;
 }
+
+[data-theme="nord"] emoji-picker {
+    width: 100%;
+    --background: #4c566a;
+}
+
+[data-theme="black"] emoji-picker {
+    width: 100%;
+    --background: #2a323c;
+}

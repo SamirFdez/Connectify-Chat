@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import "emoji-picker-element";
 
 export const MessageBox = ({ socket }) => {
   const [messageField, setMessageField] = useState("");
+  const [emojiPicker, setEmojiPicker] = useState(false);
 
   const handleChangeMessageField = (e) => {
     const inputMessage = e.target.value;
@@ -10,6 +12,7 @@ export const MessageBox = ({ socket }) => {
 
   const sendMessage = () => {
     socket.emit("chat message", messageField);
+    setEmojiPicker(false);
     setMessageField("");
   };
 
@@ -19,48 +22,82 @@ export const MessageBox = ({ socket }) => {
     }
   };
 
+  useEffect(() => {
+    document
+      .querySelector("emoji-picker")
+      .addEventListener("emoji-click", (event) =>
+        setMessageField(`${messageField} ${event.detail?.unicode}`)
+      );
+  }, [messageField]);
+
   return (
     <>
-      <div className="p-1 flex items-center w-full">
-        <input
-          type="text"
-          placeholder="Type your message..."
-          className="flex-1 border border-neutral rounded-full px-4 py-2"
-          value={messageField}
-          onChange={handleChangeMessageField}
-          onKeyDown={sendMessageKey}
-        />
-        <button
-          className="text-white bg-neutral rounded-full p-2 ml-2"
-          type="submit"
-          disabled={messageField === ""}
-          onClick={sendMessage}
+      <div className="relative">
+        <div
+          className={`absolute bottom-14 md:right-20 w-full md:w-auto ${
+            emojiPicker ? null : "hidden"
+          }`}
         >
-          <svg
-            width="20px"
-            height="20px"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            stroke="#ffffff"
-          >
-            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-            <g
-              id="SVGRepo_tracerCarrier"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></g>
-            <g id="SVGRepo_iconCarrier">
+          <emoji-picker className="bg-neutral" />
+        </div>
+        <div className="p-1 flex items-center w-full">
+          <label className="input border border-neutral rounded-full flex items-center h-10 w-full">
+            <input
+              type="text"
+              className="grow"
+              placeholder="Type your message..."
+              value={messageField}
+              onChange={handleChangeMessageField}
+              onKeyDown={sendMessageKey}
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+              onClick={() => setEmojiPicker(!emojiPicker)}
+            >
               <path
-                d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
-                stroke="#ffffff"
-                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
               />
-            </g>
-          </svg>
-        </button>
+            </svg>
+          </label>
+          <button
+            className="flex items-center justify-center text-white bg-neutral rounded-full w-10 h-10 p-2 ml-2"
+            type="submit"
+            disabled={messageField === ""}
+            onClick={sendMessage}
+          >
+            <svg
+              width="20px"
+              height="20px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              stroke="#ffffff"
+            >
+              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+              <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></g>
+              <g id="SVGRepo_iconCarrier">
+                <path
+                  d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z"
+                  stroke="#ffffff"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </g>
+            </svg>
+          </button>
+        </div>
       </div>
     </>
   );

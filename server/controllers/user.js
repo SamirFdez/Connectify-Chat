@@ -3,12 +3,7 @@ import User from "../schemas/user.js";
 export const updateOrCreateUser = async (user) => {
   try {
     const query = { deviceId: user.deviceId };
-    const updateFields = {
-      username: user.username,
-      avatarId: user.avatarId,
-      deviceId: user.deviceId,
-      isConnected: true,
-    };
+    const updateFields = { ...user, isConnected: true };
 
     const result = await User.findOneAndUpdate(query, updateFields, {
       new: true,
