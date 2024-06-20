@@ -12,13 +12,15 @@ export const HomeContainer = () => {
     socket.on("connect", () => {
       socket.emit("user", user);
     });
+
+
   }, []);
 
   return (
     <>
       <div className="flex items-center justify-center w-full h-full px-4 md:px-20 mt-3">
         <div className="flex flex-col justify-between w-full h-[80vh] bg-base-300 rounded-lg p-3">
-          <GeneralChat socket={socket} />
+          <GeneralChat socket={socket} user={user} />
         </div>
       </div>
     </>

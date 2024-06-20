@@ -21,9 +21,17 @@ export const createMessage = async (messageReceived) => {
     });
 
     await newMessage.save();
-
-    console.log("Message saved:", newMessage);
   } catch (err) {
     console.log("Oops! Error receiving message:", err);
   }
+};
+
+export const getAllMessage = async () => {
+  try {
+    const messages = await Message.find({}).populate({
+      path: "user",
+      select: "-__v -_id -createdAt",
+    });
+    return messages;
+  } catch (error) {}
 };

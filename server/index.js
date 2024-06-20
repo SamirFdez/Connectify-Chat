@@ -4,8 +4,8 @@ import { Server } from "socket.io";
 import { createServer } from "node:http";
 import { connectionDB } from "./connection.js";
 
-import { updateOrCreateUser } from "./controllers/user.js";
-import { createMessage } from "./controllers/message.js";
+import { updateOrCreateUser, userDisconnect } from "./controllers/user.js";
+import { createMessage, getAllMessage } from "./controllers/message.js";
 
 const PORT = process.env.PORT ?? 3000;
 
@@ -37,12 +37,20 @@ const io = new Server(server, {
 
 io.on("connect", (socket) => {
   socket.on("user", (user) => {
+    socket.user = user.deviceId;
     updateOrCreateUser(user);
   });
 
-  socket.on("messageReceived", (messageReceived) => {
-    createMessage(messageReceived);
-    // io.emit("chat message", message);
+  socket.on("chat message", async (message) => {
+    if (message) {
+      await createMessage(message);
+    }
+    const messages = await getAllMessage();
+    io.emit("chat message", messages);
+  });
+
+  socket.on("disconnect", () => {
+    userDisconnect(socket.user);
   });
 });
 

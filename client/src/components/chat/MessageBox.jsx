@@ -14,7 +14,7 @@ export const MessageBox = ({ socket }) => {
   };
 
   const sendMessage = () => {
-    socket.emit("messageReceived", {
+    socket.emit("chat message", {
       message: messageField,
       deviceId: user.deviceId,
     });
@@ -32,7 +32,7 @@ export const MessageBox = ({ socket }) => {
     document
       .querySelector("emoji-picker")
       .addEventListener("emoji-click", (event) =>
-        setMessageField(`${messageField} ${event.detail?.unicode}`)
+        setMessageField(messageField + event.detail?.unicode)
       );
   }, [messageField]);
 

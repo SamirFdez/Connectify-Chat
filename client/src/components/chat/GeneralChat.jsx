@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
-import { MessageReceived } from "./MessageReceived";
-// import { MessageSent } from "./MessageSent";
+import {Message} from "./Message"
 import { MessageBox } from "./MessageBox";
 
-export const GeneralChat = ({ socket }) => {
-  const [messages, setMessages] = useState([]);
+export const GeneralChat = ({ socket, user }) => {
+  const [allMessages, setAllMessages] = useState([]);
 
-  useEffect(() => {
-    // Manejar la suscripción al evento 'chat message'
-    const handleNewMessage = (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom();
-    };
-
-    socket?.on("chat message", handleNewMessage);
-
-    // Limpiar la suscripción cuando el componente se desmonta
-    return () => {
-      socket?.off("chat message", handleNewMessage);
-    };
-  }, []);
-
-  // Función para desplazar automáticamente al fondo del contenedor de mensajes
   const scrollToBottom = () => {
     const chatBubble = document.getElementById("chat-bubble");
     if (chatBubble) {
@@ -29,14 +12,23 @@ export const GeneralChat = ({ socket }) => {
     }
   };
 
+  useEffect(() => {
+    socket.emit("chat message");
+
+    socket.on("chat message", (messages) => {
+      setAllMessages(messages);
+      scrollToBottom();
+    });
+  }, []);
+
   return (
     <>
       <div
         id="chat-bubble"
         className="w-full items-end max-h-[90%] overflow-x-hidden"
       >
-        {messages.map((message, index) => (
-          <MessageReceived key={index} message={message} />
+        {allMessages?.map((msg) => (
+          <Message key={msg._id} message={msg} user={user} />
         ))}
       </div>
       <MessageBox socket={socket} />
