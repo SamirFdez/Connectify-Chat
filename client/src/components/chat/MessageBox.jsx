@@ -8,6 +8,13 @@ export const MessageBox = ({ socket }) => {
   const [messageField, setMessageField] = useState("");
   const [emojiPicker, setEmojiPicker] = useState(false);
 
+  const scrollToBottom = () => {
+    const chatBubble = document.getElementById("chat-bubble");
+    if (chatBubble) {
+      chatBubble.scrollTop = chatBubble.scrollHeight;
+    }
+  };
+
   const handleChangeMessageField = (e) => {
     const inputMessage = e.target.value;
     setMessageField(inputMessage);

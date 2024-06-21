@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {Message} from "./Message"
+import { Message } from "./Message";
 import { MessageBox } from "./MessageBox";
 
 export const GeneralChat = ({ socket, user }) => {
@@ -17,7 +17,9 @@ export const GeneralChat = ({ socket, user }) => {
 
     socket.on("chat message", (messages) => {
       setAllMessages(messages);
-      scrollToBottom();
+      setTimeout(() => {
+        scrollToBottom();
+      }, 500);
     });
   }, []);
 
