@@ -6,7 +6,9 @@ export const HomeContainer = () => {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("connectifyUser")) ?? {}
   );
-  const socket = io("http://localhost:3000/");
+  const socket = io("https://connectifychat.onrender.com/");
+  // const socket = io("http://localhost:3000/");
+
 
   useEffect(() => {
     socket.on("connect", () => {
