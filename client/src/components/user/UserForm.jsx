@@ -48,7 +48,7 @@ export const UserForm = ({ user, addUser, avatarsRandom }) => {
             </div>
           </label>
           <h1 className="pb-4">Choose an avatar</h1>
-          <div className="grid grid-cols-6 md:grid-cols-6 gap-3 pb-12">
+          <div className="grid grid-cols-5 md:grid-cols-6 gap-3 pb-12">
             {avatarsRandom?.map((avatar, idx) => (
               <div
                 className="avatar"
@@ -56,7 +56,7 @@ export const UserForm = ({ user, addUser, avatarsRandom }) => {
                 onClick={() => setAvatarId(idx + 1)}
               >
                 <div
-                  className={`w-16 rounded-full ${
+                  className={`w-16 h-16 rounded-full ${
                     avatarId === idx + 1
                       ? "ring-offset-2 ring ring-primary"
                       : null

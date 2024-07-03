@@ -16,7 +16,7 @@ export const UserLogic = () => {
 
   const generateAvatars = () => {
     const copyAvatarsRandom = [];
-    for (let i = 0; i < 46; i++) {
+    for (let i = 0; i < 48; i++) {
       let avatarObject = {
         id: i,
         selected: false,

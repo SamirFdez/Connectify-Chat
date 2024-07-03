@@ -7,15 +7,11 @@ export const HomeContainer = () => {
     JSON.parse(localStorage.getItem("connectifyUser")) ?? {}
   );
   const socket = io("https://connectifychat.onrender.com/");
-  // const socket = io("http://localhost:3000/");
-
 
   useEffect(() => {
     socket.on("connect", () => {
       socket.emit("user", user);
     });
-
-
   }, []);
 
   return (
