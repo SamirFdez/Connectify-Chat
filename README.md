@@ -16,4 +16,5 @@ I developed a global chat application that allows users to choose a username and
 
 - NodeJs
 - Express
-- MongoDB
+- MongoDB with Mongoose
+- Socket.io
