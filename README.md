@@ -15,6 +15,8 @@ I developed a global chat application that allows users to choose a username and
 ## Backend Stacks
 
 - NodeJs
+- Dotenv
 - Express
+- Cors
 - MongoDB with Mongoose
 - Socket.io
